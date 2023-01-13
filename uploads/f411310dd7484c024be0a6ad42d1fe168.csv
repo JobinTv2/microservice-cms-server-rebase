@@ -1,0 +1,2 @@
+name,title,description,rating,is_sold,owner_id,category,reviews,author,price
+Book 21,Book 21, Description of book 21,2,FALSE,1000,Crime thriller,,User 21,101
