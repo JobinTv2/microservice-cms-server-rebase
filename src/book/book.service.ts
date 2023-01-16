@@ -30,10 +30,17 @@ export class BookService {
     return result;
   }
 
-  async getBook(options: IPaginationOptions) {
+  async getBook() {
+    const result = await firstValueFrom(
+      this.client.send<string, string>('db/book/get', '').pipe(),
+    );
+    return result;
+  }
+
+  async getBookWithPagination(options: IPaginationOptions) {
     const result = await firstValueFrom(
       this.client
-        .send<string, IPaginationOptions>('db/book/get', options)
+        .send<string, IPaginationOptions>('db/book/get/paginated', options)
         .pipe(),
     );
     return result;
