@@ -1,4 +1,4 @@
-import { Injectable, Inject, LoggerService } from '@nestjs/common';
+import { Injectable, Inject, LoggerService, Logger } from '@nestjs/common';
 import {
   ClientProxy,
   ClientProxyFactory,
@@ -24,5 +24,9 @@ export class AppService {
 
   public testService(dto: string) {
     return this.client.send<string, string>('test', dto).pipe();
+  }
+
+  taskScheduleTest() {
+    this.logger.log('Task scheduling call on 30th second of each minute');
   }
 }

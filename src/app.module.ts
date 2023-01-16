@@ -13,6 +13,7 @@ import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import 'winston-daily-rotate-file';
 import { UploadProcessor } from './book/processors/upload.processor';
+import { ScheduleModule } from '@nestjs/schedule/dist';
 
 const { combine, timestamp, printf, errors, json } = winston.format;
 const logFormat = printf(({ level, message, timestamp }) => {
@@ -60,6 +61,7 @@ const transportWarn = new winston.transports.DailyRotateFile({
     BookModule,
     UserModule,
     AuthModule,
+    ScheduleModule.forRoot(),
     WinstonModule.forRoot({
       format: combine(
         winston.format.colorize(),
