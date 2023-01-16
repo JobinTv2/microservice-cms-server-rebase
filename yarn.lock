@@ -4035,6 +4035,11 @@ nest-winston@^1.8.0:
   dependencies:
     fast-safe-stringify "^2.1.1"
 
+nestjs-typeorm-paginate@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/nestjs-typeorm-paginate/-/nestjs-typeorm-paginate-4.0.3.tgz#7dfda6988d424b022d0ca8715d88317d7b89f2b1"
+  integrity sha512-qr/pdSTIWTLRCf0xiAsGa2TV1KuHyramLzxV+n4VQ5RYLs7APusum7WdGWRWb/ByUlz+T9BWC5mKIGHotLtMnQ==
+
 node-abort-controller@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/node-abort-controller/-/node-abort-controller-3.0.1.tgz#f91fa50b1dee3f909afabb7e261b1e1d6b0cb74e"

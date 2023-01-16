@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   ParseFilePipeBuilder,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { BookService } from './book.service';
 import { Observable } from 'rxjs';
@@ -40,10 +41,21 @@ export class BookController {
   //   return this.bookService.getTodos(id);
   // }
 
+  // @UseGuards(JwtAuthGuard)
+  // @Get()
+  // getBook() {
+  //   return this.bookService.getBook();
+  // }
+
   @UseGuards(JwtAuthGuard)
   @Get()
-  getBook() {
-    return this.bookService.getBook();
+  getBook(@Query('page') page = 1, @Query('limit') limit = 2) {
+    limit = limit > 100 ? 100 : limit;
+    return this.bookService.getBook({
+      limit,
+      page,
+      route: 'http://localhost:3000/book',
+    });
   }
 
   @UseGuards(JwtAuthGuard)
