@@ -54,7 +54,7 @@ export class BookController {
     return this.bookService.getBook({
       limit,
       page,
-      route: 'http://localhost:3000/book',
+      route: `${process.env.BASE_URL}book`,
     });
   }
 
