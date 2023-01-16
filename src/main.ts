@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { LoggingInerceptor } from './interceptors/logging.interceptor';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston/dist/winston.constants';
 dotenv.config();
@@ -12,6 +12,10 @@ async function bootstrap() {
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new LoggingInerceptor());
+  app.enableVersioning({
+    type: VersioningType.MEDIA_TYPE,
+    key: 'v=',
+  });
   await app.listen(3000);
 }
 bootstrap();
