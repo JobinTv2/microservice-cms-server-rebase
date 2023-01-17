@@ -5,6 +5,10 @@ import { Transport } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { CreateBookDto } from './dto/create-book.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+
+interface Options extends IPaginationOptions {
+  search: string;
+}
 @Injectable()
 export class BookService {
   private client: ClientProxy;
@@ -37,10 +41,10 @@ export class BookService {
     return result;
   }
 
-  async getBookWithPagination(options: IPaginationOptions) {
+  async getBookWithPagination(options: Options) {
     const result = await firstValueFrom(
       this.client
-        .send<string, IPaginationOptions>('db/book/get/paginated', options)
+        .send<string, Options>('db/book/get/paginated', options)
         .pipe(),
     );
     return result;

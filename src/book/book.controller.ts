@@ -52,12 +52,18 @@ export class BookController {
   @Version('2')
   @UseGuards(JwtAuthGuard)
   @Get()
-  getBookWithPagination(@Query('page') page = 1, @Query('limit') limit = 2) {
+  getBookWithPagination(
+    @Query('page') page = 1,
+    @Query('limit') limit = 2,
+    @Query('search') search: string,
+  ) {
     limit = limit > 100 ? 100 : limit;
+    search = search || null;
     return this.bookService.getBookWithPagination({
       limit,
       page,
       route: `${process.env.BASE_URL}book`,
+      search,
     });
   }
 
