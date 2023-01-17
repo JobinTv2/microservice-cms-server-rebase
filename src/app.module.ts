@@ -12,9 +12,9 @@ import { AuthModule } from './auth/auth.module';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import 'winston-daily-rotate-file';
-import { UploadProcessor } from './book/processors/upload.processor';
 import { ScheduleModule } from '@nestjs/schedule/dist';
-
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 const { combine, timestamp, printf, errors, json } = winston.format;
 const logFormat = printf(({ level, message, timestamp }) => {
   return `[${timestamp}] ${level}: ${message}`;
@@ -62,6 +62,10 @@ const transportWarn = new winston.transports.DailyRotateFile({
     UserModule,
     AuthModule,
     ScheduleModule.forRoot(),
+    ThrottlerModule.forRoot({
+      ttl: 10,
+      limit: 2,
+    }),
     WinstonModule.forRoot({
       format: combine(
         winston.format.colorize(),
@@ -84,6 +88,14 @@ const transportWarn = new winston.transports.DailyRotateFile({
     }),
   ],
   controllers: [AppController, OrderController, UserController],
-  providers: [AppService, OrderService, UserService],
+  providers: [
+    AppService,
+    OrderService,
+    UserService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
