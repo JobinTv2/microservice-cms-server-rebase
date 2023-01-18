@@ -1,9 +1,9 @@
 import { Body, Controller, Post, Get, Version } from '@nestjs/common';
 import { UseFilters } from '@nestjs/common/decorators';
-import { InternalServerErrorException } from '@nestjs/common/exceptions';
 import { AppService } from './app.service';
 import { HttpExceptionFilter } from './filters/exception.filter';
 import { Cron } from '@nestjs/schedule';
+// import { SkipThrottle, Throttle } from '@nestjs/throttler';
 @Controller()
 @UseFilters(HttpExceptionFilter)
 export class AppController {
@@ -27,8 +27,10 @@ export class AppController {
     this.appService.taskScheduleTest();
   }
 
+  // @SkipThrottle()
+  // @Throttle(3, 10)
   @Post('test')
   async create(@Body() dto: string) {
-    throw new InternalServerErrorException();
+    return 'Response';
   }
 }

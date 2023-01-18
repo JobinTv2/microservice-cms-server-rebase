@@ -15,6 +15,7 @@ import 'winston-daily-rotate-file';
 import { ScheduleModule } from '@nestjs/schedule/dist';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 const { combine, timestamp, printf, errors, json } = winston.format;
 const logFormat = printf(({ level, message, timestamp }) => {
   return `[${timestamp}] ${level}: ${message}`;
@@ -61,10 +62,20 @@ const transportWarn = new winston.transports.DailyRotateFile({
     BookModule,
     UserModule,
     AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      ignoreEnvFile: false,
+    }),
     ScheduleModule.forRoot(),
-    ThrottlerModule.forRoot({
-      ttl: 10,
-      limit: 2,
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          ttl: config.get('THROTTLE_TTL'),
+          limit: config.get('THROTTLE_LIMIT'),
+        };
+      },
     }),
     WinstonModule.forRoot({
       format: combine(
