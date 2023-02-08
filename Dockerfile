@@ -1,12 +1,15 @@
-FROM node:18
+FROM node:18-alpine As development
 
 WORKDIR "/src/."
 
-COPY package*.json ./
+COPY --chown=node:node package*.json ./
 
-RUN npm install
+RUN npm ci
+ 
 
-COPY . .
+COPY --chown=node:node . .
+
+USER node
 
 RUN npm run build
 
