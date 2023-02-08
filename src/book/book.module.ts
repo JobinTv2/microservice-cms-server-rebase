@@ -4,12 +4,19 @@ import { BookController } from './book.controller';
 import { BullModule } from '@nestjs/bull';
 import { UploadProcessor } from './processors/upload.processor';
 import { MulterModule } from '@nestjs/platform-express';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [
-    BullModule.forRoot({
-      redis: {
-        host: 'localhost',
-        port: 6379,
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          redis: {
+            host: config.get('REDIS_HOST'),
+            port: Number(config.get('REDIS_PORT')),
+          },
+        };
       },
     }),
     BullModule.registerQueue({

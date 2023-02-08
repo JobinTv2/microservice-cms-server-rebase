@@ -16,8 +16,8 @@ export class AppService {
     this.client = ClientProxyFactory.create({
       transport: Transport.REDIS,
       options: {
-        host: 'localhost',
-        port: 6379,
+        host: process.env.REDIS_HOST,
+        port: Number(process.env.REDIS_PORT),
       },
     });
   }
