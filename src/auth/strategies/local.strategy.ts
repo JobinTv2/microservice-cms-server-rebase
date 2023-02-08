@@ -2,7 +2,6 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { HttpException } from '@nestjs/common/exceptions';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
-import { HttpExceptionFilter } from 'src/filters/exception.filter';
 import { AuthService } from '../auth.service';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -14,7 +13,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     const user = await this.authService.validateUser({ email, password });
     if (!user) {
       throw new HttpException('Provide valid credentials', HttpStatus.OK);
-      // throw new UnauthorizedException();
     }
     return user;
   }

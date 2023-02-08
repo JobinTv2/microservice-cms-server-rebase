@@ -32,7 +32,6 @@ const transportError = new winston.transports.DailyRotateFile({
 
 const transportCombined = new winston.transports.DailyRotateFile({
   filename: './logs/server-combined.log-%DATE%.log',
-  level: 'error',
   format: combine(
     timestamp(),
     json(),
@@ -87,10 +86,6 @@ const transportWarn = new winston.transports.DailyRotateFile({
       transports: [
         new winston.transports.Console({
           format: winston.format.combine(errors({ stack: true })),
-        }),
-        new winston.transports.File({
-          filename: 'combined.log',
-          format: combine(timestamp(), json(), winston.format.prettyPrint()),
         }),
         transportError,
         transportWarn,
